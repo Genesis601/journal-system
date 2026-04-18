@@ -1,4 +1,3 @@
- 
 @extends('layouts.public')
 
 @section('title', 'JournalSpace — Open Access Research Publishing')
@@ -42,8 +41,7 @@
         {{-- Quick Tags --}}
         <div class="flex flex-wrap justify-center gap-2 mt-5">
             @foreach(['Biology', 'Medicine', 'Agriculture', 'Computer Science', 'Environment', 'Education', 'Chemistry'] as $tag)
-                <a href="{{ route('search') }}?q={{ $tag }}"
-                   class="bg-white bg-opacity-10 hover:bg-opacity-20 text-[#c5d5e8] text-xs px-3 py-1.5 rounded-full border border-white border-opacity-20 transition-all cursor-pointer">
+                <a href="{{ route('search') }}?q={{ $tag }}" class="bg-white bg-opacity-10 hover:bg-opacity-20 text-[#c5d5e8] text-xs px-3 py-1.5 rounded-full border border-white border-opacity-20 transition-all cursor-pointer">
                     {{ $tag }}
                 </a>
             @endforeach
@@ -89,14 +87,14 @@
 
     @php
         $colors = [
-            'bg-blue-50',
-            'bg-green-50',
-            'bg-amber-50',
-            'bg-purple-50',
-            'bg-teal-50',
-            'bg-red-50',
-            'bg-pink-50',
-            'bg-indigo-50',
+            'bg-blue-50 text-blue-600',
+            'bg-green-50 text-green-600',
+            'bg-amber-50 text-amber-600',
+            'bg-purple-50 text-purple-600',
+            'bg-teal-50 text-teal-600',
+            'bg-red-50 text-red-600',
+            'bg-pink-50 text-pink-600',
+            'bg-indigo-50 text-indigo-600',
         ];
         $icons = ['🔬', '🌱', '⚕️', '💻', '🌊', '📚', '🧬', '⚡'];
     @endphp
@@ -105,16 +103,14 @@
         @forelse($journals as $index => $journal)
             <a href="{{ route('journals.show', $journal->slug) }}"
                class="bg-white border border-gray-100 rounded-xl overflow-hidden hover:shadow-md hover:border-gray-200 transition-all group">
-                <div class="h-24 flex items-center justify-center {{ $colors[$index % 8] }}">
+                <div class="h-24 flex items-center justify-center {{ explode(' ', $colors[$index % 8])[0] }}">
                     <span class="text-3xl">{{ $icons[$index % 8] }}</span>
                 </div>
                 <div class="p-3">
                     <h3 class="text-sm font-medium text-gray-800 leading-snug mb-1 group-hover:text-[#0f2744] transition-colors line-clamp-2">
                         {{ $journal->title }}
                     </h3>
-                    <p class="text-xs text-gray-400">
-                        {{ $journal->published_articles_count ?? 0 }} articles · {{ ucfirst($journal->frequency) }}
-                    </p>
+                    <p class="text-xs text-gray-400">{{ $journal->published_articles_count ?? 0 }} articles · {{ ucfirst($journal->frequency) }}</p>
                     @if($journal->issn)
                         <p class="text-[10px] text-gray-300 mt-0.5">ISSN: {{ $journal->issn }}</p>
                     @endif
@@ -145,7 +141,7 @@
                 @forelse($latestArticles as $index => $article)
                     <a href="{{ route('articles.show', $article->slug) }}"
                        class="bg-white border border-gray-100 rounded-xl p-5 hover:shadow-md hover:border-gray-200 transition-all flex gap-4 group">
-                        <div class="w-11 h-11 rounded-lg flex items-center justify-center flex-shrink-0 {{ $colors[$index % 8] }}">
+                        <div class="w-11 h-11 rounded-lg flex items-center justify-center flex-shrink-0 {{ explode(' ', $colors[$index % 8])[0] }}">
                             <span class="text-lg">{{ $icons[$index % 8] }}</span>
                         </div>
                         <div class="flex-1 min-w-0">
@@ -179,33 +175,23 @@
         {{-- Sidebar --}}
         <div class="lg:col-span-1">
 
-            {{-- Quick Search --}}
+            {{-- Search --}}
             <div class="bg-white border border-gray-100 rounded-xl p-5 mb-5">
                 <h3 class="text-sm font-semibold text-gray-800 mb-3">Quick Search</h3>
                 <form action="{{ route('search') }}" method="GET">
                     <div class="flex gap-2">
-                        <input type="text" name="q" placeholder="Search..."
-                               class="flex-1 border border-gray-200 rounded-lg px-3 py-2 text-sm outline-none focus:border-[#e8a020] transition-colors">
+                        <input type="text" name="q" placeholder="Search..." class="flex-1 border border-gray-200 rounded-lg px-3 py-2 text-sm outline-none focus:border-[#e8a020]">
                         <button type="submit" class="bg-[#0f2744] text-white px-4 py-2 rounded-lg text-sm hover:bg-[#1a3d5c] transition-colors">Go</button>
                     </div>
                 </form>
             </div>
 
-            {{-- Browse by Subject --}}
+            {{-- Categories --}}
             <div class="bg-white border border-gray-100 rounded-xl p-5 mb-5">
                 <h3 class="text-sm font-semibold text-gray-800 mb-4">Browse by Subject</h3>
                 <div class="flex flex-col divide-y divide-gray-50">
-                    @foreach([
-                        'Biological Sciences',
-                        'Medical Sciences',
-                        'Agricultural Science',
-                        'Computer Science',
-                        'Environmental Science',
-                        'Education Research',
-                        'Social Sciences'
-                    ] as $category)
-                        <a href="{{ route('search') }}?q={{ urlencode($category) }}"
-                           class="flex items-center justify-between py-2.5 hover:text-[#e8a020] transition-colors group">
+                    @foreach(['Biological Sciences', 'Medical Sciences', 'Agricultural Science', 'Computer Science', 'Environmental Science', 'Education Research', 'Social Sciences'] as $category)
+                        <a href="{{ route('search') }}?q={{ $category }}" class="flex items-center justify-between py-2.5 hover:text-[#e8a020] transition-colors group">
                             <span class="text-sm text-gray-600 group-hover:text-[#e8a020]">{{ $category }}</span>
                             <svg class="w-4 h-4 text-gray-300 group-hover:text-[#e8a020]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
@@ -219,15 +205,11 @@
             <div class="bg-[#0f2744] rounded-xl p-6 text-center">
                 <div class="text-3xl mb-3">✍️</div>
                 <h3 class="text-white font-semibold text-sm mb-2">Publish Your Research</h3>
-                <p class="text-[#a0b4cc] text-xs leading-relaxed mb-4">
-                    Join thousands of researchers sharing open-access work with the global academic community.
-                </p>
-                <a href="{{ route('register') }}"
-                   class="block bg-[#e8a020] hover:bg-[#d4911c] text-white text-sm font-medium py-2.5 rounded-lg transition-colors">
+                <p class="text-[#a0b4cc] text-xs leading-relaxed mb-4">Join thousands of researchers sharing open-access work with the global academic community.</p>
+                <a href="{{ route('register') }}" class="block bg-[#e8a020] hover:bg-[#d4911c] text-white text-sm font-medium py-2.5 rounded-lg transition-colors">
                     Submit a Manuscript
                 </a>
             </div>
-
         </div>
     </div>
 </div>
@@ -236,6 +218,7 @@
 
 @push('scripts')
 <script>
+    // Live search suggestions (basic)
     const searchInput = document.querySelector('input[name="q"]');
     if (searchInput) {
         searchInput.addEventListener('keydown', function(e) {
