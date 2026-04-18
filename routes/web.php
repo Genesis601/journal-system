@@ -62,6 +62,9 @@ Route::middleware(['auth', 'role:editor'])->prefix('editor')->name('editor.')->g
     Route::post('/manuscripts/{id}/reject', [ReviewController::class, 'reject'])->name('manuscripts.reject');
     Route::get('/messages', [EditorMessageController::class, 'index'])->name('messages.index');
     Route::post('/messages', [EditorMessageController::class, 'store'])->name('messages.store');
+Route::get('/articles', [\App\Http\Controllers\Editor\ReviewController::class, 'articles'])->name('articles.index');
+Route::post('/articles/{id}/unpublish', [\App\Http\Controllers\Editor\ReviewController::class, 'unpublish'])->name('articles.unpublish');
+Route::delete('/articles/{id}', [\App\Http\Controllers\Editor\ReviewController::class, 'deleteArticle'])->name('articles.delete');
 });
 
 // ─────────────────────────────────────────
@@ -73,4 +76,8 @@ Route::middleware(['auth', 'role:super_admin'])->prefix('admin')->name('admin.')
     Route::resource('/journals', AdminJournalController::class);
     Route::get('/settings', [SettingsController::class, 'index'])->name('settings.index');
     Route::post('/settings', [SettingsController::class, 'update'])->name('settings.update');
+Route::get('/articles', [\App\Http\Controllers\Admin\ArticleController::class, 'index'])->name('articles.index');
+Route::post('/articles/{id}/unpublish', [\App\Http\Controllers\Admin\ArticleController::class, 'unpublish'])->name('articles.unpublish');
+Route::delete('/articles/{id}', [\App\Http\Controllers\Admin\ArticleController::class, 'deleteArticle'])->name('articles.delete');
+Route::post('/articles/{id}/message', [\App\Http\Controllers\Admin\ArticleController::class, 'sendMessage'])->name('articles.message');
 });
