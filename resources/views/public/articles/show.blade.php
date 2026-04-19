@@ -109,6 +109,10 @@
                         <p class="text-sm text-gray-700">{{ $article->published_at?->format('F d, Y') }}</p>
                     </div>
                     <div>
+                         <p class="text-xs text-gray-400 mb-0.5">Views</p>
+                         <p class="text-sm text-gray-700">{{ number_format($article->views) }} reads</p>
+                    </div>
+                    <div>
                         <p class="text-xs text-gray-400 mb-0.5">Access</p>
                         <span class="bg-green-50 text-green-700 text-xs font-medium px-2 py-1 rounded">Open Access</span>
                     </div>

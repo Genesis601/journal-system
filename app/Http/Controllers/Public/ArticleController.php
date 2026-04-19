@@ -24,6 +24,9 @@ class ArticleController extends Controller
                           ->with(['journal', 'author'])
                           ->firstOrFail();
 
+        // Increment view count
+        $article->increment('views');
+
         $related = Article::where('journal_id', $article->journal_id)
                           ->where('status', 'published')
                           ->where('id', '!=', $article->id)

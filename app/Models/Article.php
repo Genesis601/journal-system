@@ -13,7 +13,7 @@ class Article extends Model
     protected $fillable = [
         'journal_id', 'author_id', 'title', 'slug',
         'abstract', 'keywords', 'file_path',
-        'status', 'published_at'
+        'status', 'published_at', 'views'
     ];
 
     protected $casts = [

@@ -11,6 +11,7 @@ use App\Http\Controllers\Public\SearchController;
 // Author Routes
 use App\Http\Controllers\Author\DashboardController as AuthorDashboard;
 use App\Http\Controllers\Author\ManuscriptController;
+use App\Http\Controllers\Author\ProfileController;
 
 // Editor Routes
 use App\Http\Controllers\Editor\DashboardController as EditorDashboard;
@@ -33,6 +34,8 @@ Route::get('/journals/{slug}', [JournalController::class, 'show'])->name('journa
 Route::get('/articles', [ArticleController::class, 'index'])->name('articles.index');
 Route::get('/articles/{slug}', [ArticleController::class, 'show'])->name('articles.show');
 Route::get('/search', [SearchController::class, 'index'])->name('search');
+Route::get('/about', function () { return view('public.about'); })->name('about');
+Route::get('/contact', function () { return view('public.contact'); })->name('contact');
 
 // ─────────────────────────────────────────
 // AUTH ROUTES (Breeze)
@@ -47,12 +50,18 @@ Route::middleware(['auth', 'role:author'])
     ->name('author.')
     ->group(function () {
         Route::get('/dashboard', [AuthorDashboard::class, 'index'])->name('dashboard');
+
+        // Manuscripts
         Route::get('/manuscripts', [ManuscriptController::class, 'index'])->name('manuscripts.index');
         Route::get('/manuscripts/create', [ManuscriptController::class, 'create'])->name('manuscripts.create');
         Route::post('/manuscripts', [ManuscriptController::class, 'store'])->name('manuscripts.store');
         Route::get('/manuscripts/{id}/edit', [ManuscriptController::class, 'edit'])->name('manuscripts.edit');
         Route::put('/manuscripts/{id}', [ManuscriptController::class, 'update'])->name('manuscripts.update');
         Route::delete('/manuscripts/{id}', [ManuscriptController::class, 'destroy'])->name('manuscripts.destroy');
+
+        // Profile
+        Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+        Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
     });
 
 // ─────────────────────────────────────────

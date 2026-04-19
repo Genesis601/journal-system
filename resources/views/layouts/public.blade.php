@@ -35,8 +35,8 @@
                 <a href="{{ route('journals.index') }}" class="text-[#c5d5e8] hover:text-white text-sm transition-colors {{ request()->routeIs('journals*') ? 'text-white border-b-2 border-[#e8a020] pb-1' : '' }}">Journals</a>
                 <a href="{{ route('articles.index') }}" class="text-[#c5d5e8] hover:text-white text-sm transition-colors {{ request()->routeIs('articles*') ? 'text-white border-b-2 border-[#e8a020] pb-1' : '' }}">Articles</a>
                 <a href="{{ route('search') }}" class="text-[#c5d5e8] hover:text-white text-sm transition-colors">Search</a>
-                <a href="#about" class="text-[#c5d5e8] hover:text-white text-sm transition-colors">About</a>
-                <a href="#contact" class="text-[#c5d5e8] hover:text-white text-sm transition-colors">Contact</a>
+                <a href="{{ route('about') }}" class="text-[#c5d5e8] hover:text-white text-sm transition-colors {{ request()->routeIs('about') ? 'text-white border-b-2 border-[#e8a020] pb-1' : '' }}">About</a>
+                <a href="{{ route('contact') }}" class="text-[#c5d5e8] hover:text-white text-sm transition-colors {{ request()->routeIs('contact') ? 'text-white border-b-2 border-[#e8a020] pb-1' : '' }}">Contact</a>
             </div>
 
             {{-- Right Side --}}
@@ -74,6 +74,8 @@
                 <a href="{{ route('journals.index') }}" class="text-[#c5d5e8] hover:text-white text-sm px-2">Journals</a>
                 <a href="{{ route('articles.index') }}" class="text-[#c5d5e8] hover:text-white text-sm px-2">Articles</a>
                 <a href="{{ route('search') }}" class="text-[#c5d5e8] hover:text-white text-sm px-2">Search</a>
+                <a href="{{ route('about') }}" class="text-[#c5d5e8] hover:text-white text-sm px-2">About</a>
+                <a href="{{ route('contact') }}" class="text-[#c5d5e8] hover:text-white text-sm px-2">Contact</a>
                 <a href="{{ route('login') }}" class="text-[#c5d5e8] hover:text-white text-sm px-2">Login</a>
                 <a href="{{ route('register') }}" class="bg-[#e8a020] text-white text-sm px-4 py-2 rounded-lg text-center font-medium">Submit Manuscript</a>
             </div>
