@@ -167,8 +167,21 @@
 
         {{-- Bottom bar --}}
         <div class="border-t border-[#1e3a5a] pt-6 flex flex-col md:flex-row justify-between items-center gap-4">
-            <p class="text-[#3d5a75] text-xs">© {{ date('Y') }} JournalSpace. All rights reserved. Open Access Publishing Platform.</p>
-            <p class="text-[#3d5a75] text-xs">Built with Laravel · Powered by Open Access</p>
+            <div class="flex flex-col sm:flex-row items-center gap-2">
+    <p class="text-[#3d5a75] text-xs">© {{ date('Y') }} JournalSpace. All rights reserved.</p>
+    <span class="text-[#3d5a75] text-xs hidden sm:block">·</span>
+    <a href="https://genesis601.github.io/VixTech-Portfolio/"
+       target="_blank"
+       rel="noopener noreferrer"
+       class="flex items-center gap-1.5 group">
+        <span class="text-[#6b8aaa] text-xs group-hover:text-[#e8a020] transition-colors">
+            Designed & Developed by
+        </span>
+        <span class="text-[#e8a020] text-xs font-semibold group-hover:text-white transition-colors border border-[#e8a020] border-opacity-40 group-hover:border-opacity-100 group-hover:bg-[#e8a020] px-2 py-0.5 rounded-full">
+            VixTech Developers
+        </span>
+    </a>
+</div>
         </div>
     </div>
 </footer>

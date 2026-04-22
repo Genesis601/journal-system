@@ -35,6 +35,7 @@
                 </div>
             </a>
         </div>
+        
 
         {{-- User Info --}}
         <div class="p-4 border-b border-[#1e3a5a]">
@@ -49,12 +50,33 @@
                     <p class="text-[#a0b4cc] text-[10px] truncate">{{ auth()->user()->email }}</p>
                 </div>
             </div>
+            
         </div>
 
         {{-- Navigation --}}
         <nav class="flex-1 p-4 overflow-y-auto">
             @yield('sidebar-nav')
         </nav>
+        
+        {{-- Branding --}}
+<div class="mt-4 pt-3 border-t border-[#1e3a5a]">
+    <a href="https://genesis601.github.io/VixTech-Portfolio/"
+       target="_blank"
+       rel="noopener noreferrer"
+       class="flex items-center gap-2 group">
+        <div class="w-6 h-6 bg-[#e8a020] bg-opacity-20 rounded flex items-center justify-center flex-shrink-0 group-hover:bg-opacity-40 transition-all">
+            <span class="text-[#e8a020] text-[9px] font-bold">VT</span>
+        </div>
+        <div>
+            <p class="text-[9px] text-[#3d5a75] group-hover:text-[#6b8aaa] transition-colors leading-tight">
+                Designed & Developed by
+            </p>
+            <p class="text-[10px] text-[#e8a020] font-semibold leading-tight group-hover:text-white transition-colors">
+                VixTech Developers
+            </p>
+        </div>
+    </a>
+</div>
 
         {{-- Bottom --}}
         <div class="p-4 border-t border-[#1e3a5a]">
