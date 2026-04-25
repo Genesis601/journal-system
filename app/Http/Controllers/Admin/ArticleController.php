@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Mail\ArticleUnpublished;
+use App\Mail\ArticleDeleted;
+use Illuminate\Support\Facades\Mail;
 use App\Http\Controllers\Controller;
 use App\Models\Article;
 use App\Models\Message;
@@ -57,6 +60,9 @@ class ArticleController extends Controller
             'body'        => "Your article has been temporarily unpublished for revision.\n\nReason: " . $request->reason . "\n\nPlease update your manuscript and resubmit for review.",
         ]);
 
+        Mail::to($article->author->email)
+    ->send(new ArticleUnpublished($article, $request->reason));
+
         return redirect()->route('admin.articles.index')
                          ->with('success', 'Article unpublished and author notified.');
     }
@@ -76,6 +82,13 @@ class ArticleController extends Controller
             'subject'     => 'Your article has been removed: ' . $article->title,
             'body'        => "We regret to inform you that your article titled \"{$article->title}\" has been permanently removed from our platform.\n\nReason: " . $request->reason . "\n\nIf you have any questions please contact the editorial team.",
         ]);
+
+        Mail::to($article->author->email)
+    ->send(new ArticleDeleted(
+        $article->author->name,
+        $article->title,
+        $request->reason
+    ));
 
         $article->delete();
 

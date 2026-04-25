@@ -27,27 +27,33 @@
                 <h2 class="text-lg font-semibold text-gray-800 mb-1">Send us a Message</h2>
                 <p class="text-sm text-gray-400 mb-6">We typically respond within 24-48 hours</p>
 
-                <form class="flex flex-col gap-5">
-                    @csrf
+               <form method="POST" action="{{ route('contact.send') }}" class="flex flex-col gap-5">
+    @csrf
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
                             <label class="block text-xs font-medium text-gray-700 mb-1.5">Full Name</label>
-                            <input type="text"
-                                   class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm text-gray-700 outline-none focus:border-[#e8a020] focus:ring-1 focus:ring-[#e8a020] transition-colors"
-                                   placeholder="Your full name">
+                           <input type="text"
+                            name="name"
+                            value="{{ old('name') }}"
+                            class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm text-gray-700 outline-none focus:border-[#e8a020] focus:ring-1 focus:ring-[#e8a020] transition-colors @error('name') border-red-300 @enderror"
+                            placeholder="Your full name">
+                        @error('name') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
                         </div>
                         <div>
                             <label class="block text-xs font-medium text-gray-700 mb-1.5">Email Address</label>
-                            <input type="email"
-                                   class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm text-gray-700 outline-none focus:border-[#e8a020] focus:ring-1 focus:ring-[#e8a020] transition-colors"
-                                   placeholder="you@example.com">
+                           <input type="email"
+                            name="email"
+                            value="{{ old('email') }}"
+                            class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm text-gray-700 outline-none focus:border-[#e8a020] focus:ring-1 focus:ring-[#e8a020] transition-colors @error('email') border-red-300 @enderror"
+                            placeholder="you@example.com">
+                        @error('email') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
                         </div>
                     </div>
 
                     <div>
                         <label class="block text-xs font-medium text-gray-700 mb-1.5">Subject</label>
-                        <select class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm text-gray-700 outline-none focus:border-[#e8a020] transition-colors">
+                         <select name="subject" class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm text-gray-700 outline-none focus:border-[#e8a020] transition-colors">
                             <option value="">Select a subject</option>
                             <option>Manuscript Submission Inquiry</option>
                             <option>Editorial Process Question</option>
@@ -60,9 +66,11 @@
 
                     <div>
                         <label class="block text-xs font-medium text-gray-700 mb-1.5">Message</label>
-                        <textarea rows="6"
-                                  class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm text-gray-700 outline-none focus:border-[#e8a020] transition-colors resize-none"
-                                  placeholder="Write your message here..."></textarea>
+                       <textarea name="message"
+                            rows="6"
+                            class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm text-gray-700 outline-none focus:border-[#e8a020] transition-colors resize-none @error('message') border-red-300 @enderror"
+                            placeholder="Write your message here...">{{ old('message') }}</textarea>
+                    @error('message') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
                     </div>
 
                     <button type="submit"
@@ -72,6 +80,21 @@
                 </form>
             </div>
         </div>
+       
+@if(session('success'))
+    <div class="bg-green-50 border border-green-200 text-green-700 text-sm px-4 py-3 rounded-lg mb-4 flex items-center gap-2">
+        <svg class="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+        </svg>
+        {{ session('success') }}
+    </div>
+@endif
+
+@if(session('error'))
+    <div class="bg-red-50 border border-red-200 text-red-700 text-sm px-4 py-3 rounded-lg mb-4">
+        {{ session('error') }}
+    </div>
+@endif
 
         {{-- CONTACT INFO --}}
         <div class="flex flex-col gap-5">

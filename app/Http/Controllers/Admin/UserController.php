@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Mail\NewEditorAccount;
+use Illuminate\Support\Facades\Mail;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -41,6 +43,15 @@ class UserController extends Controller
         ]);
 
         $user->assignRole($request->role);
+
+            if ($request->role === 'editor') {
+            Mail::to($user->email)
+                ->send(new NewEditorAccount(
+                    $user->name,
+                    $user->email,
+                    $request->password
+                ));
+        }
 
         return redirect()->route('admin.users.index')
                          ->with('success', ucfirst($request->role) . ' account created successfully!');

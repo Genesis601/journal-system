@@ -35,8 +35,12 @@ Route::get('/articles', [ArticleController::class, 'index'])->name('articles.ind
 Route::get('/articles/{slug}', [ArticleController::class, 'show'])->name('articles.show');
 Route::get('/search', [SearchController::class, 'index'])->name('search');
 Route::get('/about', function () { return view('public.about'); })->name('about');
-Route::get('/contact', function () { return view('public.contact'); })->name('contact');
+Route::get('/contact', function () {
+    return view('public.contact');
+})->name('contact');
 
+Route::post('/contact', [App\Http\Controllers\Public\ContactController::class, 'send'])
+     ->name('contact.send');
 // ─────────────────────────────────────────
 // AUTH ROUTES (Breeze)
 // ─────────────────────────────────────────

@@ -3,10 +3,13 @@
 namespace App\Http\Controllers\Author;
 
 use App\Http\Controllers\Controller;
+use App\Mail\ManuscriptSubmitted;
 use App\Models\Article;
 use App\Models\Journal;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
 class ManuscriptController extends Controller
@@ -39,7 +42,7 @@ class ManuscriptController extends Controller
 
         $filePath = $request->file('file')->store('manuscripts', 'public');
 
-        Article::create([
+        $article = Article::create([
             'title'      => $request->title,
             'slug'       => Str::slug($request->title) . '-' . Str::random(6),
             'journal_id' => $request->journal_id,
@@ -49,6 +52,14 @@ class ManuscriptController extends Controller
             'file_path'  => $filePath,
             'status'     => 'submitted',
         ]);
+
+        // Send confirmation email to author
+        try {
+            Mail::to($request->user()->email)
+                ->send(new ManuscriptSubmitted($article));
+        } catch (\Exception $e) {
+            Log::error('Manuscript submission email failed: ' . $e->getMessage());
+        }
 
         return redirect()->route('author.manuscripts.index')
                          ->with('success', 'Manuscript submitted successfully!');
