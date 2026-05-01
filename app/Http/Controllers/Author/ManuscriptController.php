@@ -16,10 +16,10 @@ class ManuscriptController extends Controller
 {
     public function index()
     {
-        $manuscripts = Auth::user()->articles()
-                           ->with('journal')
-                           ->latest()
-                           ->paginate(10);
+        $manuscripts = Article::where('author_id', Auth::id())
+                              ->with('journal')
+                              ->latest()
+                              ->paginate(10);
 
         return view('author.manuscripts.index', compact('manuscripts'));
     }
