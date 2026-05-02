@@ -11,7 +11,9 @@ nixPkgs = [
     "php82Extensions.tokenizer",
     "php82Extensions.fileinfo",
     "php82Extensions.openssl",
-    "composer"
+    "composer",
+    "nodejs_20",
+    "npm-9_x"
 ]
 
 [phases.install]
