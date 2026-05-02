@@ -29,5 +29,9 @@ cmds = [
     "php artisan storage:link"
 ]
 
+[variables]
+IS_LARAVEL = "true"
+NODE_ENV = "production"
+
 [start]
 cmd = "php artisan serve --host=0.0.0.0 --port=$PORT"
