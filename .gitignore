@@ -21,3 +21,7 @@ _ide_helper.php
 Homestead.json
 Homestead.yaml
 Thumbs.db
+!public/build
+!public/build/manifest.json
+!public/build/assets
+!public/build/assets/**
