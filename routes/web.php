@@ -45,11 +45,12 @@ Route::post('/contact', [App\Http\Controllers\Public\ContactController::class, '
 // AUTH ROUTES (Breeze)
 // ─────────────────────────────────────────
 // Simple password reset (no email token required)
-Route::get('/forgot-password', [\App\Http\Controllers\Auth\SimplePasswordResetController::class, 'show'])
+// ─────────────────────────────────────────
+Route::get('/reset-password', [\App\Http\Controllers\Auth\SimplePasswordResetController::class, 'show'])
      ->name('password.simple.show')
      ->middleware('guest');
 
-Route::post('/forgot-password', [\App\Http\Controllers\Auth\SimplePasswordResetController::class, 'update'])
+Route::post('/reset-password', [\App\Http\Controllers\Auth\SimplePasswordResetController::class, 'update'])
      ->name('password.simple.update')
      ->middleware('guest');
 
