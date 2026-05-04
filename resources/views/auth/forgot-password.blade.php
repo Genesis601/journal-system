@@ -91,8 +91,7 @@
             @endif
 
             {{-- Form --}}
-            <form method="POST" action="{{ route('password.simple.update') }}" class="flex flex-col gap-4">
-                @csrf
+                    <form method="POST" action="/reset-password" class="flex flex-col gap-4">                @csrf
 
                 {{-- Email --}}
                 <div>
