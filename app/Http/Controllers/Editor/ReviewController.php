@@ -6,14 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Article;
 use App\Models\ArticleReview;
 use App\Models\Message;
-use App\Mail\ManuscriptApproved;
-use App\Mail\ManuscriptRejected;
-use App\Mail\ManuscriptUnderReview;
-use App\Mail\ArticleUnpublished;
-use App\Mail\ArticleDeleted;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Log;
 
 class ReviewController extends Controller
@@ -33,17 +27,9 @@ class ReviewController extends Controller
         $manuscript = Article::with(['journal', 'author', 'reviews.editor'])
                              ->findOrFail($id);
 
-        // Only update status if it's submitted
+        // Only update status — NO email here
         if ($manuscript->status === 'submitted') {
             $manuscript->update(['status' => 'under_review']);
-
-            // Send email safely
-            try {
-                Mail::to($manuscript->author->email)
-                    ->send(new ManuscriptUnderReview($manuscript));
-            } catch (\Exception $e) {
-                Log::error('Under review email failed: ' . $e->getMessage());
-            }
         }
 
         return view('editor.manuscripts.show', compact('manuscript'));
@@ -71,13 +57,16 @@ class ReviewController extends Controller
             'slug'         => \Illuminate\Support\Str::slug($manuscript->title) . '-' . $manuscript->id,
         ]);
 
-        // Send email safely
-        try {
-            Mail::to($manuscript->author->email)
-                ->send(new ManuscriptApproved($manuscript, $request->comments ?? ''));
-        } catch (\Exception $e) {
-            Log::error('Approval email failed: ' . $e->getMessage());
-        }
+        // In-system message to author
+        Message::create([
+            'sender_id'   => Auth::id(),
+            'receiver_id' => $manuscript->author_id,
+            'article_id'  => $manuscript->id,
+            'subject'     => 'Your manuscript has been approved: ' . $manuscript->title,
+            'body'        => $request->comments
+                ? 'Congratulations! Your manuscript has been approved and published. Editor note: ' . $request->comments
+                : 'Congratulations! Your manuscript has been approved and published on JournalSpace.',
+        ]);
 
         return redirect()->route('editor.manuscripts.index')
                          ->with('success', 'Manuscript approved and published!');
@@ -101,7 +90,7 @@ class ReviewController extends Controller
 
         $manuscript->update(['status' => 'rejected']);
 
-        // Send in-system message
+        // In-system message to author
         Message::create([
             'sender_id'   => Auth::id(),
             'receiver_id' => $manuscript->author_id,
@@ -110,19 +99,10 @@ class ReviewController extends Controller
             'body'        => $request->comments,
         ]);
 
-        // Send email safely
-        try {
-            Mail::to($manuscript->author->email)
-                ->send(new ManuscriptRejected($manuscript, $request->comments));
-        } catch (\Exception $e) {
-            Log::error('Rejection email failed: ' . $e->getMessage());
-        }
-
         return redirect()->route('editor.manuscripts.index')
                          ->with('success', 'Manuscript rejected and author notified.');
     }
 
-    // ── Published articles management ──
     public function articles(Request $request)
     {
         $query = Article::where('status', 'published')
@@ -160,14 +140,6 @@ class ReviewController extends Controller
             'body'        => "Your article has been temporarily unpublished for revision.\n\nReason: " . $request->reason,
         ]);
 
-        // Send email safely
-        try {
-            Mail::to($article->author->email)
-                ->send(new ArticleUnpublished($article, $request->reason));
-        } catch (\Exception $e) {
-            Log::error('Unpublish email failed: ' . $e->getMessage());
-        }
-
         return redirect()->route('editor.articles.index')
                          ->with('success', 'Article unpublished and author notified.');
     }
@@ -187,18 +159,6 @@ class ReviewController extends Controller
             'subject'     => 'Your article has been removed: ' . $article->title,
             'body'        => "Your article titled \"{$article->title}\" has been permanently removed.\n\nReason: " . $request->reason,
         ]);
-
-        // Send email safely
-        try {
-            Mail::to($article->author->email)
-                ->send(new ArticleDeleted(
-                    $article->author->name,
-                    $article->title,
-                    $request->reason
-                ));
-        } catch (\Exception $e) {
-            Log::error('Delete article email failed: ' . $e->getMessage());
-        }
 
         $article->delete();
 
