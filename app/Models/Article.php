@@ -12,7 +12,7 @@ class Article extends Model
 
     protected $fillable = [
         'journal_id', 'author_id', 'title', 'slug',
-        'abstract', 'keywords', 'file_path',
+        'abstract', 'keywords', 'file_path', 'file_public_id',
         'status', 'published_at', 'views'
     ];
 

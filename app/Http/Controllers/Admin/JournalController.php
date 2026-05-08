@@ -4,11 +4,20 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Journal;
+use App\Services\CloudinaryService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 class JournalController extends Controller
 {
+    protected CloudinaryService $cloudinary;
+
+    public function __construct(CloudinaryService $cloudinary)
+    {
+        $this->cloudinary = $cloudinary;
+    }
+
     public function index()
     {
         $journals = Journal::withCount('articles')->latest()->paginate(15);
@@ -30,19 +39,31 @@ class JournalController extends Controller
             'cover_image' => 'nullable|image|max:2048',
         ]);
 
-        $coverPath = null;
+        $coverPath     = null;
+        $coverPublicId = null;
+
         if ($request->hasFile('cover_image')) {
-            $coverPath = $request->file('cover_image')->store('journals', 'public');
+            try {
+                $uploaded      = $this->cloudinary->uploadImage(
+                    $request->file('cover_image')->getRealPath(),
+                    'journal-system/covers'
+                );
+                $coverPath     = $uploaded['secure_url'];
+                $coverPublicId = $uploaded['public_id'];
+            } catch (\Exception $e) {
+                Log::error('Cover image upload failed: ' . $e->getMessage());
+            }
         }
 
         Journal::create([
-            'title'       => $request->title,
-            'slug'        => Str::slug($request->title),
-            'issn'        => $request->issn,
-            'description' => $request->description,
-            'frequency'   => $request->frequency,
-            'cover_image' => $coverPath,
-            'is_active'   => true,
+            'title'          => $request->title,
+            'slug'           => Str::slug($request->title),
+            'issn'           => $request->issn,
+            'description'    => $request->description,
+            'frequency'      => $request->frequency,
+            'cover_image'    => $coverPath,
+            'cover_public_id'=> $coverPublicId,
+            'is_active'      => true,
         ]);
 
         return redirect()->route('admin.journals.index')
@@ -68,19 +89,35 @@ class JournalController extends Controller
             'is_active'   => 'boolean',
         ]);
 
-        $coverPath = $journal->cover_image;
+        $coverPath     = $journal->cover_image;
+        $coverPublicId = $journal->cover_public_id;
+
         if ($request->hasFile('cover_image')) {
-            $coverPath = $request->file('cover_image')->store('journals', 'public');
+            if ($coverPublicId) {
+                $this->cloudinary->deleteFile($coverPublicId, 'image');
+            }
+
+            try {
+                $uploaded      = $this->cloudinary->uploadImage(
+                    $request->file('cover_image')->getRealPath(),
+                    'journal-system/covers'
+                );
+                $coverPath     = $uploaded['secure_url'];
+                $coverPublicId = $uploaded['public_id'];
+            } catch (\Exception $e) {
+                Log::error('Cover image upload failed: ' . $e->getMessage());
+            }
         }
 
         $journal->update([
-            'title'       => $request->title,
-            'slug'        => Str::slug($request->title),
-            'issn'        => $request->issn,
-            'description' => $request->description,
-            'frequency'   => $request->frequency,
-            'cover_image' => $coverPath,
-            'is_active'   => $request->boolean('is_active'),
+            'title'           => $request->title,
+            'slug'            => Str::slug($request->title),
+            'issn'            => $request->issn,
+            'description'     => $request->description,
+            'frequency'       => $request->frequency,
+            'cover_image'     => $coverPath,
+            'cover_public_id' => $coverPublicId,
+            'is_active'       => $request->boolean('is_active'),
         ]);
 
         return redirect()->route('admin.journals.index')
@@ -89,7 +126,13 @@ class JournalController extends Controller
 
     public function destroy($id)
     {
-        Journal::findOrFail($id)->delete();
+        $journal = Journal::findOrFail($id);
+
+        if ($journal->cover_public_id) {
+            $this->cloudinary->deleteFile($journal->cover_public_id, 'image');
+        }
+
+        $journal->delete();
 
         return redirect()->route('admin.journals.index')
                          ->with('success', 'Journal deleted.');

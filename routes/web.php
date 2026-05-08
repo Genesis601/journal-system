@@ -118,3 +118,20 @@ Route::middleware(['auth', 'role:super_admin'])
         Route::get('/settings', [SettingsController::class, 'index'])->name('settings.index');
         Route::post('/settings', [SettingsController::class, 'update'])->name('settings.update');
     });
+
+    // ─────────────────────────────────────────
+// PASSWORD RESET ROUTES
+// ─────────────────────────────────────────
+Route::middleware('guest')->group(function () {
+    Route::get('/forgot-password', [\App\Http\Controllers\Auth\PasswordResetController::class, 'showForgotForm'])
+         ->name('password.forgot');
+
+    Route::post('/forgot-password', [\App\Http\Controllers\Auth\PasswordResetController::class, 'sendResetLink'])
+         ->name('password.send-link');
+
+    Route::get('/reset-password/{token}', [\App\Http\Controllers\Auth\PasswordResetController::class, 'showResetForm'])
+         ->name('password.reset.form');
+
+    Route::post('/reset-password', [\App\Http\Controllers\Auth\PasswordResetController::class, 'resetPassword'])
+         ->name('password.reset.update');
+});

@@ -11,7 +11,8 @@ class Journal extends Model
 
     protected $fillable = [
         'title', 'slug', 'issn', 'description',
-        'cover_image', 'frequency', 'is_active'
+        'cover_image', 'cover_public_id',
+        'frequency', 'is_active'
     ];
 
     public function articles()

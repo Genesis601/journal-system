@@ -118,12 +118,10 @@
                 <div>
                     <div class="flex items-center justify-between mb-1.5">
                         <label class="block text-xs font-medium text-gray-700">Password</label>
-                        @if(Route::has('password.request'))
-                          <a href="/forgot-password"
+                       <a href="{{ route('password.forgot') }}"
                             class="text-xs text-[#e8a020] hover:text-[#d4911c] transition-colors">
                                 Forgot password?
                             </a>
-                        @endif 
                     </div>
                     <div class="relative">
                         <input type="password" name="password" id="password" required
