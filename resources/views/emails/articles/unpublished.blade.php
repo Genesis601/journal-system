@@ -1,10 +1,11 @@
 @extends('emails.layout')
 
 @section('content')
-    <p class="greeting">Your Article Has Been Unpublished</p>
+    <p class="greeting">Your Article Has Been Unpublished ⚠️</p>
     <p class="message">
         Dear <strong>{{ $article->author->name }}</strong>,<br><br>
-        We are writing to inform you that your article has been temporarily removed from public view on JournalSpace pending revision.
+        We are writing to inform you that your article has been temporarily removed
+        from public view on JournalSpace pending revision.
     </p>
 
     <div class="warning-box">
@@ -18,14 +19,18 @@
     </div>
 
     <p class="message">
-        Please log in to your author dashboard, revise your manuscript based on the feedback above and resubmit it for review. Once approved it will be republished on the platform.
+        Please log in to your author dashboard, revise your manuscript based on the
+        feedback above and resubmit it for review. Once approved it will be republished
+        on the platform.
     </p>
 
-    <a href="{{ url('/author/manuscripts') }}" class="btn">Go to My Manuscripts</a>
+    <div style="text-align:center; margin: 28px 0;">
+        <a href="{{ url('/author/manuscripts') }}" class="btn">Go to My Manuscripts</a>
+    </div>
 
     <div class="divider"></div>
 
     <p style="font-size:13px; color:#6b7280;">
-        If you have any questions about this decision, please contact our editorial team.
+        If you have any questions about this decision please contact our editorial team.
     </p>
-@endsection 
+@endsection

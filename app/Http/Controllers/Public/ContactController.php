@@ -29,7 +29,7 @@ class ContactController extends Controller
                 ));
 
             return redirect()->route('contact')
-                             ->with('success', 'Your message has been sent! We will get back to you within 24-48 hours.');
+                             ->with('success', 'Your message has been sent successfully! We will get back to you within 24-48 hours.');
 
         } catch (\Exception $e) {
             Log::error('Contact form email failed: ' . $e->getMessage());

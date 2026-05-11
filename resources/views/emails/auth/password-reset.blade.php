@@ -9,9 +9,7 @@
     </p>
 
     <div style="text-align:center; margin: 32px 0;">
-        <a href="{{ $resetUrl }}" class="btn" style="display:inline-block;">
-            Reset My Password
-        </a>
+        <a href="{{ $resetUrl }}" class="btn">Reset My Password</a>
     </div>
 
     <div class="info-box">
@@ -19,7 +17,8 @@
     </div>
 
     <div class="warning-box">
-        <p>🔒 If you did not request this reset please ignore this email. Your password will remain unchanged.</p>
+        <p>🔒 If you did not request this reset please ignore this email.
+        Your password will remain unchanged.</p>
     </div>
 
     <div class="divider"></div>
@@ -30,4 +29,4 @@
             {{ $resetUrl }}
         </a>
     </p>
-@endsection 
+@endsection

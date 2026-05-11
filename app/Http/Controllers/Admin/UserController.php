@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Mail\NewEditorAccount;
-use Illuminate\Support\Facades\Mail;
 use App\Http\Controllers\Controller;
+use App\Mail\NewEditorAccount;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
@@ -44,13 +45,18 @@ class UserController extends Controller
 
         $user->assignRole($request->role);
 
-            if ($request->role === 'editor') {
-            Mail::to($user->email)
-                ->send(new NewEditorAccount(
-                    $user->name,
-                    $user->email,
-                    $request->password
-                ));
+        // Send welcome email to new editors
+        if ($request->role === 'editor') {
+            try {
+                Mail::to($user->email)
+                    ->send(new NewEditorAccount(
+                        $user->name,
+                        $user->email,
+                        $request->password
+                    ));
+            } catch (\Exception $e) {
+                Log::error('New editor email failed: ' . $e->getMessage());
+            }
         }
 
         return redirect()->route('admin.users.index')
@@ -85,5 +91,21 @@ class UserController extends Controller
 
         return redirect()->route('admin.users.index')
                          ->with('success', 'User deleted successfully.');
+    }
+
+    public function resetPassword(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+
+        $request->validate([
+            'password' => 'required|string|min:8|confirmed',
+        ]);
+
+        $user->update([
+            'password' => Hash::make($request->password),
+        ]);
+
+        return redirect()->route('admin.users.show', $user->id)
+                         ->with('success', 'Password reset successfully for ' . $user->name);
     }
 }

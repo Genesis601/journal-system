@@ -139,7 +139,6 @@ class PasswordResetController extends Controller
           ->where('email', $request->email)
           ->delete();
 
-        // Clear rate limiter after successful reset
         RateLimiter::clear('password-reset:' . $request->email);
 
         return redirect()->route('login')

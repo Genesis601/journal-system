@@ -1,10 +1,11 @@
 @extends('emails.layout')
 
 @section('content')
-    <p class="greeting">Notice: Your Article Has Been Removed</p>
+    <p class="greeting">Notice: Your Article Has Been Removed 🗑️</p>
     <p class="message">
         Dear <strong>{{ $authorName }}</strong>,<br><br>
-        We are writing to inform you that your article has been permanently removed from JournalSpace by our editorial team.
+        We are writing to inform you that your article has been permanently removed
+        from JournalSpace by our editorial team.
     </p>
 
     <div class="warning-box">
@@ -17,14 +18,18 @@
     </div>
 
     <p class="message">
-        If you believe this decision was made in error or would like to discuss further, please contact our editorial team through the contact page on our website.
+        If you believe this decision was made in error or would like to discuss further
+        please contact our editorial team through the contact page on our website.
     </p>
 
-    <a href="{{ url('/contact') }}" class="btn">Contact Editorial Team</a>
+    <div style="text-align:center; margin: 28px 0;">
+        <a href="{{ url('/contact') }}" class="btn">Contact Editorial Team</a>
+    </div>
 
     <div class="divider"></div>
 
     <p style="font-size:13px; color:#6b7280;">
-        We appreciate your contributions to JournalSpace and hope to continue working with you in the future.
+        We appreciate your contributions to JournalSpace and hope to continue
+        working with you in the future.
     </p>
-@endsection 
+@endsection

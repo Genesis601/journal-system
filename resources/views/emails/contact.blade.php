@@ -8,14 +8,16 @@
 
     <div class="info-box">
         <p><strong>From:</strong> {{ $senderName }}</p>
-        <p><strong>Email:</strong> {{ $senderEmail }}</p>
+        <p><strong>Email:</strong>
+            <a href="mailto:{{ $senderEmail }}" style="color:#e8a020;">
+                {{ $senderEmail }}
+            </a>
+        </p>
         <p><strong>Subject:</strong> {{ $messageSubject }}</p>
     </div>
 
     <div class="info-box">
-        <p><strong>Message:</strong></p>
-        <br>
-        <p>{{ $messageBody }}</p>
+        <p><strong>Message:</strong><br><br>{{ $messageBody }}</p>
     </div>
 
     <div class="divider"></div>
@@ -23,6 +25,8 @@
     <p style="font-size:13px; color:#6b7280;">
         Reply directly to this email to respond to
         <strong>{{ $senderName }}</strong> at
-        <a href="mailto:{{ $senderEmail }}">{{ $senderEmail }}</a>
+        <a href="mailto:{{ $senderEmail }}" style="color:#e8a020;">
+            {{ $senderEmail }}
+        </a>
     </p>
 @endsection

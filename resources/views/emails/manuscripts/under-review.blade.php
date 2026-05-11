@@ -4,7 +4,8 @@
     <p class="greeting">Your Manuscript is Under Review 🔍</p>
     <p class="message">
         Dear <strong>{{ $article->author->name }}</strong>,<br><br>
-        Great news! Your manuscript has been assigned to one of our editors and is currently under review. We will notify you once a decision has been made.
+        Great news! Your manuscript has been assigned to one of our editors and is
+        currently under review. We will notify you once a decision has been made.
     </p>
 
     <div class="info-box">
@@ -14,8 +15,12 @@
     </div>
 
     <p class="message">
-        The review process typically takes a few days. You will receive an email notification as soon as a decision is reached. In the meantime, you can monitor your submission status from your dashboard.
+        The review process typically takes a few days. You will receive an email notification
+        as soon as a decision is reached. In the meantime you can monitor your submission
+        status from your dashboard.
     </p>
 
-    <a href="{{ url('/author/dashboard') }}" class="btn">View Dashboard</a>
-@endsection 
+    <div style="text-align:center; margin: 28px 0;">
+        <a href="{{ url('/author/dashboard') }}" class="btn">View Dashboard</a>
+    </div>
+@endsection

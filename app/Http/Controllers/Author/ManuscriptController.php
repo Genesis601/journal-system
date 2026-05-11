@@ -3,12 +3,14 @@
 namespace App\Http\Controllers\Author;
 
 use App\Http\Controllers\Controller;
+use App\Mail\ManuscriptSubmitted;
 use App\Models\Article;
 use App\Models\Journal;
 use App\Services\CloudinaryService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
 class ManuscriptController extends Controller
@@ -23,8 +25,6 @@ class ManuscriptController extends Controller
     public function index()
     {
         $manuscripts = Article::where('author_id', Auth::id())
-                           ->with('journal')
-                           ->latest()
                            ->paginate(10);
 
         return view('author.manuscripts.index', compact('manuscripts'));
@@ -60,7 +60,7 @@ class ManuscriptController extends Controller
                 ->withInput();
         }
 
-        Article::create([
+        $article = Article::create([
             'title'          => $request->title,
             'slug'           => Str::slug($request->title) . '-' . Str::random(6),
             'journal_id'     => $request->journal_id,
@@ -71,6 +71,14 @@ class ManuscriptController extends Controller
             'file_public_id' => $publicId,
             'status'         => 'submitted',
         ]);
+
+        // Send confirmation email
+        try {
+            Mail::to(Auth::user()->email)
+                ->send(new ManuscriptSubmitted($article));
+        } catch (\Exception $e) {
+            Log::error('Submission email failed: ' . $e->getMessage());
+        }
 
         return redirect()->route('author.manuscripts.index')
                          ->with('success', 'Manuscript submitted successfully!');
