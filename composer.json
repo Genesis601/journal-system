@@ -11,6 +11,7 @@
         "laravel/framework": "^13.0",
         "laravel/scout": "^11.1",
         "laravel/tinker": "^3.0",
+        "resend/resend-laravel": "^1.4",
         "spatie/laravel-permission": "^7.3",
         "teamtnt/tntsearch": "^5.0"
     },
