@@ -39,7 +39,7 @@
             </div>
         </form>
 
-        {{-- Quick Tags --}}
+        {{-- Quick Tags 
         <div class="flex flex-wrap justify-center gap-2 mt-5">
             @foreach(['Biology', 'Medicine', 'Agriculture', 'Computer Science', 'Environment', 'Education', 'Chemistry'] as $tag)
                 <a href="{{ route('search') }}?q={{ $tag }}"
@@ -47,7 +47,7 @@
                     {{ $tag }}
                 </a>
             @endforeach
-        </div>
+        </div> --}}
     </div>
 </section>
 
@@ -191,7 +191,7 @@
                 </form>
             </div>
 
-            {{-- Browse by Subject --}}
+            {{-- Browse by Subject 
             <div class="bg-white border border-gray-100 rounded-xl p-5 mb-5">
                 <h3 class="text-sm font-semibold text-gray-800 mb-4">Browse by Subject</h3>
                 <div class="flex flex-col divide-y divide-gray-50">
@@ -213,7 +213,7 @@
                         </a>
                     @endforeach
                 </div>
-            </div>
+            </div>--}}
 
             {{-- Submit CTA --}}
             <div class="bg-[#0f2744] rounded-xl p-6 text-center">
