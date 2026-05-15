@@ -41,14 +41,14 @@
         <div class="text-center py-20">
             <p class="text-5xl mb-4">🔍</p>
             <p class="text-gray-500 text-base">Enter a search term above to find articles</p>
-            <div class="flex flex-wrap justify-center gap-2 mt-5">
+          {{--  <div class="flex flex-wrap justify-center gap-2 mt-5">
                 @foreach(['Biology', 'Medicine', 'Agriculture', 'Computer Science', 'Environment', 'Education'] as $tag)
                     <a href="{{ route('search') }}?q={{ $tag }}"
                        class="bg-gray-100 hover:bg-[#e8a020] hover:text-white text-gray-600 text-sm px-4 py-2 rounded-lg transition-colors">
                         {{ $tag }}
                     </a>
                 @endforeach
-            </div>
+            </div> --}}
         </div>
 
     @elseif($results->isEmpty())
